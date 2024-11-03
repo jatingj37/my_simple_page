@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Famous People Grid</title>
+    <style>
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-gap: 5px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px auto;
+        }
+        .square {
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: lightgray;
+            text-align: center;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .square.alive {
+            background-color: lightgreen;
+        }
+        .square.dead {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="grid"></div>
+    <script>
+        const people = [
+            { name: "Barack Obama", page: "Barack_Obama" },
+            { name: "Taylor Swift", page: "Taylor_Swift" },
+            { name: "Cristiano Ronaldo", page: "Cristiano_Ronaldo" },
+            { name: "Lionel Messi", page: "Lionel_Messi" },
+            { name: "Oprah Winfrey", page: "Oprah_Winfrey" },
+            { name: "Bill Gates", page: "Bill_Gates" },
+            { name: "Elon Musk", page: "Elon_Musk" },
+            { name: "Beyoncé", page: "Beyoncé" },
+            { name: "Rihanna", page: "Rihanna" },
+            { name: "Justin Bieber", page: "Justin_Bieber" },
+            { name: "Lady Gaga", page: "Lady_Gaga" },
+            { name: "Tom Cruise", page: "Tom_Cruise" },
+            { name: "Jennifer Lawrence", page: "Jennifer_Lawrence" },
+            { name: "Serena Williams", page: "Serena_Williams" },
+            { name: "LeBron James", page: "LeBron_James" },
+            { name: "Dwayne Johnson", page: "Dwayne_Johnson" },
+            { name: "Angelina Jolie", page: "Angelina_Jolie" },
+            { name: "Brad Pitt", page: "Brad_Pitt" },
+            { name: "Leonardo DiCaprio", page: "Leonardo_DiCaprio" },
+            { name: "Mark Zuckerberg", page: "Mark_Zuckerberg" },
+            { name: "Kim Kardashian", page: "Kim_Kardashian" },
+            { name: "Kanye West", page: "Kanye_West" },
+            { name: "Ed Sheeran", page: "Ed_Sheeran" },
+            { name: "Adele", page: "Adele" },
+            { name: "Katy Perry", page: "Katy_Perry" },
+            { name: "Bruno Mars", page: "Bruno_Mars" },
+            { name: "Chris Hemsworth", page: "Chris_Hemsworth" },
+            { name: "Robert Downey Jr.", page: "Robert_Downey_Jr." },
+            { name: "Scarlett Johansson", page: "Scarlett_Johansson" },
+            { name: "Emma Watson", page: "Emma_Watson" },
+            { name: "Daniel Radcliffe", page: "Daniel_Radcliffe" },
+            { name: "Will Smith", page: "Will_Smith" },
+            { name: "J.K. Rowling", page: "J._K._Rowling" },
+            { name: "Stephen King", page: "Stephen_King" },
+            { name: "Steven Spielberg", page: "Steven_Spielberg" },
+            { name: "Meryl Streep", page: "Meryl_Streep" },
+            { name: "Morgan Freeman", page: "Morgan_Freeman" },
+            { name: "Jack Ma", page: "Jack_Ma" },
+            { name: "Warren Buffett", page: "Warren_Buffett" },
+            { name: "Jeff Bezos", page: "Jeff_Bezos" },
+            { name: "Paul McCartney", page: "Paul_McCartney" },
+            { name: "Mick Jagger", page: "Mick_Jagger" },
+            { name: "Bruce Springsteen", page: "Bruce_Springsteen" },
+            { name: "Madonna", page: "Madonna_(entertainer)", wikidataId: "Q1744" },
+            { name: "David Beckham", page: "David_Beckham" },
+            { name: "Novak Djokovic", page: "Novak_Djokovic" },
+            { name: "Roger Federer", page: "Roger_Federer" },
+            { name: "Rafael Nadal", page: "Rafael_Nadal" },
+            { name: "Michael Phelps", page: "Michael_Phelps" },
+            { name: "Usain Bolt", page: "Usain_Bolt" },
+            { name: "Neil deGrasse Tyson", page: "Neil_deGrasse_Tyson" },
+            { name: "Bill Nye", page: "Bill_Nye" },
+            { name: "David Attenborough", page: "David_Attenborough" },
+            { name: "Pope Francis", page: "Pope_Francis" },
+            { name: "Dalai Lama", page: "14th_Dalai_Lama" },
+            { name: "Malala Yousafzai", page: "Malala_Yousafzai" },
+            { name: "Greta Thunberg", page: "Greta_Thunberg" },
+            { name: "Tim Cook", page: "Tim_Cook" },
+            { name: "Satya Nadella", page: "Satya_Nadella" },
+            { name: "Sundar Pichai", page: "Sundar_Pichai" },
+            { name: "Gal Gadot", page: "Gal_Gadot" },
+            { name: "Margot Robbie", page: "Margot_Robbie" },
+            { name: "Chris Evans", page: "Chris_Evans_(actor)" },
+            { name: "Hugh Jackman", page: "Hugh_Jackman" },
+            { name: "Ariana Grande", page: "Ariana_Grande" },
+            { name: "Selena Gomez", page: "Selena_Gomez" },
+            { name: "Shawn Mendes", page: "Shawn_Mendes" },
+            { name: "Camila Cabello", page: "Camila_Cabello" },
+            { name: "Cardi B", page: "Cardi_B" },
+            { name: "Post Malone", page: "Post_Malone" },
+            { name: "Drake", page: "Drake_(musician)" },
+            { name: "Kendrick Lamar", page: "Kendrick_Lamar" },
+            { name: "Eminem", page: "Eminem" },
+            { name: "Jay-Z", page: "Jay-Z" },
+            { name: "Justin Timberlake", page: "Justin_Timberlake" },
+            { name: "Kevin Hart", page: "Kevin_Hart" },
+            { name: "Ellen DeGeneres", page: "Ellen_DeGeneres" },
+            { name: "Jimmy Fallon", page: "Jimmy_Fallon" },
+            { name: "Stephen Colbert", page: "Stephen_Colbert" },
+            { name: "Conan O'Brien", page: "Conan_O'Brien" },
+            { name: "John Oliver", page: "John_Oliver" },
+            { name: "Trevor Noah", page: "Trevor_Noah" },
+            { name: "PewDiePie", page: "PewDiePie" },
+            { name: "Ninja", page: "Ninja_(gamer)" },
+            { name: "Markiplier", page: "Markiplier" },
+            { name: "Jacksepticeye", page: "Jacksepticeye" },
+            { name: "Tim Berners-Lee", page: "Tim_Berners-Lee" },
+            { name: "Noam Chomsky", page: "Noam_Chomsky" },
+            { name: "Angela Merkel", page: "Angela_Merkel" },
+            { name: "Emmanuel Macron", page: "Emmanuel_Macron" },
+            { name: "Justin Trudeau", page: "Justin_Trudeau" },
+            { name: "Narendra Modi", page: "Narendra_Modi" },
+            { name: "Xi Jinping", page: "Xi_Jinping" },
+            { name: "Vladimir Putin", page: "Vladimir_Putin" },
+            { name: "Benjamin Netanyahu", page: "Benjamin_Netanyahu" },
+            { name: "Boris Johnson", page: "Boris_Johnson" },
+            { name: "Volodymyr Zelenskyy", page: "Volodymyr_Zelenskyy" },
+            { name: "Greta Van Fleet", page: "Greta_Van_Fleet" },
+            { name: "Dua Lipa", page: "Dua_Lipa" },
+            { name: "Billie Eilish", page: "Billie_Eilish" }
+        ];
+
+        const grid = document.getElementById('grid');
+
+        people.forEach(person => {
+            const square = document.createElement('div');
+            square.classList.add('square');
+            square.textContent = person.name;
+            grid.appendChild(square);
+
+            console.log(`Created square for: ${person.name}`);
+
+            // Set up click event to open Wikipedia page
+            square.addEventListener('click', () => {
+                const wikiUrl = 'https://en.wikipedia.org/wiki/' + person.page;
+                console.log(`Opening Wikipedia page for: ${person.name} at ${wikiUrl}`);
+                window.open(wikiUrl, '_blank');
+            });
+
+            // Function to fetch date of death from Wikidata
+            function fetchWikidata(wikidataId) {
+                const wikidataApiUrl = `https://www.wikidata.org/w/api.php?action=wbgetclaims&format=json&origin=*&entity=${wikidataId}&property=P570`;
+                console.log(`Fetching Wikidata for ${person.name} with ID: ${wikidataId}`);
+
+                fetch(wikidataApiUrl)
+                    .then(response => {
+                        console.log(`Received response from Wikidata for ${person.name}`);
+                        return response.json();
+                    })
+                    .then(data => {
+                        const claims = data.claims;
+                        if (claims && claims.P570) {
+                            console.log(`${person.name} is deceased.`);
+                            square.classList.add('dead');
+                        } else {
+                            console.log(`${person.name} is alive.`);
+                            square.classList.add('alive');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data from Wikidata for ' + person.name, error);
+                    });
+            }
+
+            // If wikidataId is provided, use it directly
+            if (person.wikidataId) {
+                console.log(`Using provided Wikidata ID for ${person.name}`);
+                fetchWikidata(person.wikidataId);
+            } else {
+                // Fetch Wikidata ID from Wikipedia page
+                const wikipediaApiUrl = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageprops&titles=${encodeURIComponent(person.page)}`;
+                console.log(`Fetching Wikipedia pageprops for ${person.name}`);
+
+                fetch(wikipediaApiUrl)
+                    .then(response => {
+                        console.log(`Received response from Wikipedia for ${person.name}`);
+                        return response.json();
+                    })
+                    .then(data => {
+                        const pages = data.query.pages;
+                        const pageId = Object.keys(pages)[0];
+                        if (pageId !== "-1") {
+                            const wikibaseItem = pages[pageId].pageprops && pages[pageId].pageprops.wikibase_item;
+                            if (wikibaseItem) {
+                                console.log(`Found Wikidata ID for ${person.name}: ${wikibaseItem}`);
+                                fetchWikidata(wikibaseItem);
+                            } else {
+                                console.error('Wikibase item not found for ' + person.name);
+                            }
+                        } else {
+                            console.error('Page not found for ' + person.name);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data from Wikipedia for ' + person.name, error);
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
